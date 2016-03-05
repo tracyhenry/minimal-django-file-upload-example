@@ -6,7 +6,7 @@
 	</head>
 
 	<body>
-		<!-- List of uploaded documents -->
+		<!-- List of uploaded documents
 		{% if documents %}
 			<ul>
 			{% for document in documents %}
@@ -16,6 +16,7 @@
 		{% else %}
 			<p>No documents.</p>
 		{% endif %}
+		-->
 
 		<!-- Upload form. Note enctype attribute! -->
 		<form action="{% url "list" %}" method="post" enctype="multipart/form-data">
@@ -29,7 +30,7 @@
 			<p><input type="submit" value="Upload" /></p>
 		</form>
 
-		{$ if has_table %}
+		{% if has_table %}
 		<table border = "1" align = "center">
 			<tr>
 				<td></td>

@@ -7,17 +7,32 @@ from django.core.urlresolvers import reverse
 from myproject.myapp.models import Document
 from myproject.myapp.forms import DocumentForm
 
-def get_table_context(f)
+def get_table_context(f):
 
-    print f.read()
-    return {"schema_list" : [{"col" : 1, "value" : "Country"},
-                             {"col" : 2, "value" : "Population"}],
+    schema_list = []
+    row_list = []
+
+    for line in f:
+
+        cells = line.split(" ")
+        cur_row = []
+        for i in range(len(cells)):
+            cur_row.append({"col" : i, "value" : cells[i]})
+
+        if not schema_list:
+            schema_list = cur_row
+        else:
+            row_list.append({"row" : len(row_list), "cell" : cur_row})
+
+    return {"schema_list" : schema_list, "row_list" : row_list}
+#    return {"schema_list" : [{"col" : 1, "value" : "Country"},
+#                             {"col" : 2, "value" : "Population"}],
                              
-            "row_list" : [{"row" : 1, "cell" : [{"col" : 1, "value" : "China"},
-                                                {"col" : 2, "value" : "20"}]},
-                          {"row" : 2, "cell" : [{"col" : 1, "value" : "US"},
-                                                {"col" : 2, "value" : "30"}]}]}
-    
+#            "row_list" : [{"row" : 1, "cell" : [{"col" : 1, "value" : "China"},
+#                                                {"col" : 2, "value" : "20"}]},
+#                          {"row" : 2, "cell" : [{"col" : 1, "value" : "US"},
+#                                                {"col" : 2, "value" : f.name}]}]}
+
 def list(request):
 
     context = {}
@@ -30,8 +45,6 @@ def list(request):
 
             context.update(get_table_context(request.FILES['docfile']))
             context["has_table"] = True
-            # Redirect to the document list after POST
-            # return HttpResponseRedirect(reverse('myproject.myapp.views.list'))
     else:
         form = DocumentForm() # A empty, unbound form
         context["has_table"] = False
