@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import csv
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
@@ -12,12 +13,12 @@ def get_table_context(f):
     schema_list = []
     row_list = []
 
-    for line in f:
+    csvreader = csv.reader(f)
+    for line in csvreader:
 
-        cells = line.split(" ")
         cur_row = []
-        for i in range(len(cells)):
-            cur_row.append({"col" : i, "value" : cells[i]})
+        for i in range(len(line)):
+            cur_row.append({"col" : i, "value" : line[i]})
 
         if not schema_list:
             schema_list = cur_row
