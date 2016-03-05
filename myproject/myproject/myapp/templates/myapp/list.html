@@ -28,7 +28,34 @@
 			</p>
 			<p><input type="submit" value="Upload" /></p>
 		</form>
-		
+
+		{$ if has_table %}
+		<table border = "1" align = "center">
+			<tr>
+				<td></td>
+				{% for col in schema_list|dictsort:"col" %}
+					<td>
+						<b> {{ col.value }} </b>
+					</td>
+				{% endfor %}
+			</tr>
+
+			{% for row in row_list|dictsort:"row" %}
+				<tr>
+					<td>
+						{{ row.row }}
+					</td>
+					{% for col in row.cell|dictsort:"col" %}
+					
+						<td class = "cell" id = "{{ table_id }}_{{ row.row }}_{{ col.col }}">
+								{{ col.value }}
+						</td>
+					{% endfor %}
+				</tr>
+			{% endfor %}
+		</table>
+		{% endif %}
+
 	</body>
 
 </html> 
